@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.accountfy.formacaoBackend.entities.AnoMes;
 import com.accountfy.formacaoBackend.entities.Livro;
 import com.accountfy.formacaoBackend.repositories.LivroRepository;
 import com.accountfy.formacaoBackend.services.LivroService;
@@ -35,6 +36,24 @@ public class LivroResource {
 		return ResponseEntity.ok().body(list);
 	}
 	
+	@GetMapping(value="/publicadosEm")
+	public  ResponseEntity<List<Livro>> getPublicadosEm(@RequestBody AnoMes obj){
+		
+		List<Livro> list = livroService.obterPublicadosEm(obj);
+		System.out.println("AnoMes toString: "+obj.toString());
+		
+		return ResponseEntity.ok().body(list);
+	}
+	
+	@GetMapping(value="/publicadosEmLista")
+	public  ResponseEntity<List<Livro>> getPublicadosEmLista(@RequestBody AnoMes[] obj){
+		
+		List<Livro> list = livroService.obterPublicadosEm(obj);
+		System.out.println("AnoMes toString: "+obj.toString());
+		
+		return ResponseEntity.ok().body(list);
+	}
+	
 	@GetMapping(value = "/{id}")
 	public ResponseEntity<Livro> findById(@PathVariable Long id){
 		Livro obj = livroService.encontrarPeloId(id);
@@ -49,6 +68,17 @@ public class LivroResource {
 		return ResponseEntity.noContent().build();
 		
 	}
+	
+	
+	@DeleteMapping(value = "/delete")
+	public ResponseEntity<Void> delete(@RequestBody Livro obj){
+		
+		//livroService.excluir(obj);
+		livroService.excluir(obj);
+		return ResponseEntity.noContent().build();
+		
+	}
+	
 	
 	@DeleteMapping(value = "/deleteAll")
 	public ResponseEntity<Void> deleteAll(){

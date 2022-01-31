@@ -2,6 +2,7 @@ package com.accountfy.formacaoBackend.entities;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.time.YearMonth;
 import java.util.Date;
 import java.util.Objects;
@@ -30,7 +31,7 @@ public class Livro implements Serializable{
 	private Integer numeroDePaginas;
 	
 	
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM", timezone = "GMT")
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "GMT")
 	private Date publicadoEm;
 	
 	
@@ -88,8 +89,18 @@ public class Livro implements Serializable{
 	}
 
 	
-	public YearMonth getAnaMesDePublicacao() {
-		YearMonth anoMes = YearMonth.parse(this.publicadoEm.toString());
+	//public YearMonth getAnoMesDePublicacao() {
+		//YearMonth anoMes = YearMonth.parse(this.publicadoEm.toString());
+		
+		//return anoMes;
+	//}
+	public AnoMes getAnoMesDePublicacao() {
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM");
+		String dataString = sdf.format(this.publicadoEm);
+		String[] anoMesArray = dataString.split("-");
+		
+		AnoMes anoMes = new AnoMes(anoMesArray[0],anoMesArray[1]);
+		System.out.println("Data =" +anoMes.toString());
 		
 		return anoMes;
 	}
