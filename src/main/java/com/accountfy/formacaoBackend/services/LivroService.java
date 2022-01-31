@@ -89,7 +89,15 @@ public class LivroService {
 	}
 	
 	public List<Livro> obterComTituloContendo(String termo){
-		throw new NotYetImplementedException();
+		List<Livro> livros = livroRepository.findAll();
+		List<Livro> livrosComTermo = new ArrayList<>();
+		
+		for(Livro l : livros) {
+			if(l.getTitulo().contains(termo)) {
+				livrosComTermo.add(l);
+			}
+		}
+		return livrosComTermo;
 	}
 	
 	public Boolean estaVazio() {

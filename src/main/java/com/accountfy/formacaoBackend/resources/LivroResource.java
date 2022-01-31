@@ -40,7 +40,6 @@ public class LivroResource {
 	public  ResponseEntity<List<Livro>> getPublicadosEm(@RequestBody AnoMes obj){
 		
 		List<Livro> list = livroService.obterPublicadosEm(obj);
-		System.out.println("AnoMes toString: "+obj.toString());
 		
 		return ResponseEntity.ok().body(list);
 	}
@@ -49,11 +48,17 @@ public class LivroResource {
 	public  ResponseEntity<List<Livro>> getPublicadosEmLista(@RequestBody AnoMes[] obj){
 		
 		List<Livro> list = livroService.obterPublicadosEm(obj);
-		System.out.println("AnoMes toString: "+obj.toString());
+		
 		
 		return ResponseEntity.ok().body(list);
 	}
 	
+	@GetMapping(value = "obterComTermo/{termo}")
+	public ResponseEntity<List<Livro>> findByWord(@PathVariable String termo){
+		List<Livro> obj = livroService.obterComTituloContendo(termo);
+		
+		return ResponseEntity.ok().body(obj);
+	}
 	@GetMapping(value = "/{id}")
 	public ResponseEntity<Livro> findById(@PathVariable Long id){
 		Livro obj = livroService.encontrarPeloId(id);
