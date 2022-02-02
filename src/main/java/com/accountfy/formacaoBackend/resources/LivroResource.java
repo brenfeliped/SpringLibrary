@@ -4,6 +4,8 @@ import java.net.URI;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,6 +20,8 @@ import com.accountfy.formacaoBackend.entities.AnoMes;
 import com.accountfy.formacaoBackend.entities.Livro;
 import com.accountfy.formacaoBackend.repositories.LivroRepository;
 import com.accountfy.formacaoBackend.services.LivroService;
+import com.accountfy.formacaoBackend.services.exceptions.DatabaseException;
+import com.accountfy.formacaoBackend.services.exceptions.ResourceNotFoundException;
 
 
 @RestController
@@ -68,8 +72,20 @@ public class LivroResource {
 
 	@DeleteMapping(value = "/{id}")
 	public ResponseEntity<Void> delete(@PathVariable Long id){
-		
+		try {
+			
 		livroService.excluirPeloId(id);
+		
+		} catch (EmptyResultDataAccessException e) {
+			
+			throw new ResourceNotFoundException(id);
+			
+		} catch (DataIntegrityViolationException e) {
+			
+			throw new DatabaseException(e.getMessage());
+		}
+		
+			
 		return ResponseEntity.noContent().build();
 		
 	}
